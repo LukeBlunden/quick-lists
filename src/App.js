@@ -1,12 +1,28 @@
+// Package imports
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
+import styled from "styled-components";
+
+// css import
+import "./App.css";
+
+// Component imports
+import Lists from "./containers/Lists/Lists";
+
+const Container = styled.div`
+  display: grid;
+  height: 100vh;
+  align-items: center;
+  justify-items: center;
+  background-color: #E6EBED;
+`;
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <h1>And so it begins</h1>
-      </div>
+      <Container>
+        <Lists />
+      </Container>
     );
   }
 }
