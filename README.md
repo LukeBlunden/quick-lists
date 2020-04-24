@@ -1,0 +1,2 @@
+# quick-lists
+Obligatory CRUD
