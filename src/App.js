@@ -15,6 +15,7 @@ const Container = styled.div`
   align-items: center;
   justify-items: center;
   background-color: #E6EBED;
+  /* background-color: #3ADDC2; */
 `;
 
 class App extends Component {
