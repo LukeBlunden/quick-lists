@@ -43,10 +43,12 @@ class Lists extends Component {
         newItem: { text: "", time: "", complete: false },
       },
     ],
+    // Required for drag preview as we cannot access getData()
     draggedList: "",
   };
 
   componentDidMount() {
+    // Retrieve local storage data for lists and list counter
     if (window.localStorage.getItem("lists")) {
       const lists = JSON.parse(window.localStorage.getItem("lists"));
       this.setState({ lists: lists });
@@ -59,6 +61,7 @@ class Lists extends Component {
     }
   }
 
+  // Handles input value and state update on list items
   inputChangeHandler = (id, e) => {
     const lists = [...this.state.lists];
     const updateLists = lists.map((list) => {
@@ -70,26 +73,37 @@ class Lists extends Component {
     this.setState({ lists: updateLists });
   };
 
+  // Handles pushing new list items onto their list
   itemAddHandler = (e) => {
+    // Prevent form submission
     e.preventDefault();
+    // Copy state lists array
     const lists = [...this.state.lists];
     lists.forEach((list) => {
+      // Check for matching list
       if (list.id == e.target.name) {
         list.items.push(list.newItem);
+        // Reset blank new list item
         list.newItem = { text: "", time: "", complete: false };
         this.setState({ lists: lists });
+        // Update local storafe
         window.localStorage.setItem("lists", JSON.stringify(this.state.lists));
       }
+      // Set the blank text input to be focuses instead of time input
       document.querySelector(`#textInput${list.id}`).focus();
     });
   };
 
+  // Sets complete status of items
   itemDoneHandler = (id, item) => {
     const lists = [...this.state.lists];
     const updatedLists = lists.map((list) => {
+      //Check for matching list in lists
       if (list.id == id) {
         const updatedItems = list.items.map((itm) => {
+          // Check for matching list item
           if (itm === item) {
+            // Reverse it's complete status
             itm.complete = !itm.complete;
           }
           return itm;
@@ -102,10 +116,12 @@ class Lists extends Component {
     window.localStorage.setItem("lists", JSON.stringify(this.state.lists));
   };
 
+  // WIP
   itemDeleteHandler = (item) => {
     console.log(item);
   };
 
+  // Populates newList state w/ blanknewList object w/ updated id
   newListHandler = () => {
     const newList = {
       id: this.state.listCounter + 1,
@@ -116,95 +132,95 @@ class Lists extends Component {
     this.setState({ newList: newList });
   };
 
+  // Handles updating of newList title in state and input value
   titleChangeHandler = (e) => {
     const newList = { ...this.state.newList };
     newList.title = e.target.value;
     this.setState({ newList: newList });
   };
 
+  // Handles submission of the new list
   newListSubmit = (e) => {
+    // Prevent form submission
     e.preventDefault();
-    const lists = this.state.lists;
+    const lists = [...this.state.lists];
+    // Push the newList object onto the lists state
     lists.push(this.state.newList);
+    // Update list ID counter
     const newListCounter = this.state.listCounter + 1;
+    // Reset newList state back to blank, update lists state and counter state
     this.setState({ newList: "", lists: lists, listCounter: newListCounter });
+    // Update localStorage
     window.localStorage.setItem("lists", JSON.stringify(this.state.lists));
     window.localStorage.setItem("listCounter", JSON.stringify(newListCounter));
   };
-  
+
+  // Handles list deletion
   listDeleteHandler = (id) => {
     const lists = [...this.state.lists];
+    // Filter for all lists that are not the deleted list
     const updatedLists = lists.filter((list) => list.id != id);
+    // Set list state to this filtered list
     this.setState({ lists: updatedLists });
+    // Update localStorage
     window.localStorage.setItem("lists", JSON.stringify(updatedLists));
   };
-  
+
+  // Initial drag operations
   dragStart = (e) => {
-    e.dataTransfer.setData("listItemText", e.target.children[0].innerText);
+    // Save the text value for indexing
     this.setState({ draggedList: e.target.children[0].innerText });
   };
-  
+
   dragOver = (e) => {
     e.preventDefault();
   };
-  
+
+  // Handlers drag preview sorting
   dragEnter = (id, e) => {
-    // const draggedObject = e.dataTransfer.getData("listItemText");
+    // Gets hovered on object for indexing
     const droppedOnObject = e.target.innerText;
-    e.target.style = {color: "red"};
+    // Copy of lists state
     const lists = [...this.state.lists];
+    // Copy of list to be reordered
     const targetedList = { ...lists.filter((list) => list.id === id) };
+    // Find index of dragged element and hovered on element
     const draggedIndex = targetedList[0].items.findIndex(
       (item) => item.text.trim() === this.state.draggedList.trim()
-      );
-      const droppedIndex = targetedList[0].items.findIndex(
-        (item) => item.text.trim() === droppedOnObject.trim()
-        );
-        
-        const items = [...targetedList[0].items];
-        const removedItem = items.splice(draggedIndex, 1);
-        items.splice(droppedIndex, 0, removedItem[0]);
-        
-        const updatedLists = lists.map((list) => {
-          if (list.id === targetedList[0].id) {
-            list.items = [...items];
-          }
-          return list;
-        });
-        this.setState({ lists: updatedLists });
-      };
-      
-      onDrop = (id, e) => {
-        e.preventDefault();
-        const draggedObject = e.dataTransfer.getData("listItemText");
-        const droppedOnObject = e.target.innerText;
-        const lists = [...this.state.lists];
-        const targetedList = { ...lists.filter((list) => list.id === id) };
-        const draggedIndex = targetedList[0].items.findIndex(
-          (item) => item.text.trim() === draggedObject.trim()
-          );
-          const droppedIndex = targetedList[0].items.findIndex(
-            (item) => item.text.trim() === droppedOnObject.trim()
-            );
-            
-            const items = [...targetedList[0].items];
-            const removedItem = items.splice(draggedIndex, 1);
-            items.splice(droppedIndex, 0, removedItem[0]);
-            
-            const updatedLists = lists.map((list) => {
-              if (list.id === targetedList[0].id) {
-                list.items = [...items];
-              }
-              return list;
-            });
-            this.setState({ lists: updatedLists });
-            window.localStorage.setItem("lists", JSON.stringify(updatedLists));
-          };
-          
-          render() {
-            const lists = this.state.lists.map((list) => (
-              <List
-              key={list.id}
+    );
+    const droppedIndex = targetedList[0].items.findIndex(
+      (item) => item.text.trim() === droppedOnObject.trim()
+    );
+
+    // Copy of list items
+    const items = [...targetedList[0].items];
+    // Remove and assign item to be moved
+    const removedItem = items.splice(draggedIndex, 1);
+    // Insert removed item into targeted position
+    items.splice(droppedIndex, 0, removedItem[0]);
+
+    // update lists array with reordered items
+    const updatedLists = lists.map((list) => {
+      if (list.id === targetedList[0].id) {
+        list.items = [...items];
+      }
+      return list;
+    });
+    // Update state
+    this.setState({ lists: updatedLists });
+  };
+
+  // Same behaviour as above but on drop update the localStorage
+  onDrop = (id, e) => {
+    e.preventDefault();
+    this.dragEnter(id, e);
+    window.localStorage.setItem("lists", JSON.stringify(this.state.lists));
+  };
+
+  render() {
+    const lists = this.state.lists.map((list) => (
+      <List
+        key={list.id}
         info={list}
         submit={this.itemAddHandler}
         changed={this.inputChangeHandler}

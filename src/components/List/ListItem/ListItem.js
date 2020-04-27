@@ -47,7 +47,7 @@ const listItem = (props) => {
       show={props.show}
       draggable={"true"}
       onDragStart={props.dragStart}
-      onDragEnter={props.dragEnter}
+      onDragEnter={props.onDrop}
       onDragOver={props.dragOver}
       onDrop={props.onDrop}
     >
