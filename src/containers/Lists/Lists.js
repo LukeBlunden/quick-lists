@@ -5,30 +5,13 @@ import styled from "styled-components";
 // Component imports
 import List from "../../components/List/List";
 import NewList from "../../components/NewList/NewList";
+import AddButton from "../../components/UI/AddButton/AddButton";
 
 const ListsContainer = styled.div`
   width: 100vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-`;
-
-const ListButton = styled.button`
-  margin-left: -7rem;
-  margin-top: 2rem;
-  background-color: transparent;
-  border: none;
-  border-radius: 2rem;
-  cursor: pointer;
-  font-size: 4rem;
-  color: lightgray;
-  height: 4rem;
-  width: 4rem;
-  outline: none;
-
-  &:hover {
-    color: #00c9b2;
-  }
 `;
 
 class Lists extends Component {
@@ -249,7 +232,7 @@ class Lists extends Component {
       <ListsContainer>
         {lists}
         {newList}
-        <ListButton onClick={this.newListHandler}>+</ListButton>
+        <AddButton clicked={this.newListHandler} />
       </ListsContainer>
     );
   }
