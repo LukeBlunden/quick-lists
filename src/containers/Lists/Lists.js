@@ -27,7 +27,7 @@ const ListButton = styled.button`
   outline: none;
 
   &:hover {
-    color: #00C9B2;
+    color: #00c9b2;
   }
 `;
 
@@ -40,9 +40,10 @@ class Lists extends Component {
         id: 1,
         title: "The first list",
         items: [],
-        newItem: { text: "", time: "", complete: false }
+        newItem: { text: "", time: "", complete: false },
       },
     ],
+    draggedList: "",
   };
 
   componentDidMount() {
@@ -82,28 +83,28 @@ class Lists extends Component {
       document.querySelector(`#textInput${list.id}`).focus();
     });
   };
-  
+
   itemDoneHandler = (id, item) => {
     const lists = [...this.state.lists];
-    const updatedLists = lists.map(list => {
+    const updatedLists = lists.map((list) => {
       if (list.id == id) {
-        const updatedItems = list.items.map(itm => {
+        const updatedItems = list.items.map((itm) => {
           if (itm === item) {
             itm.complete = !itm.complete;
           }
           return itm;
-        })
+        });
         list.items = updatedItems;
       }
       return list;
-    })
-    this.setState({lists: updatedLists});
+    });
+    this.setState({ lists: updatedLists });
     window.localStorage.setItem("lists", JSON.stringify(this.state.lists));
-  }
-  
+  };
+
   itemDeleteHandler = (item) => {
     console.log(item);
-  }
+  };
 
   newListHandler = () => {
     const newList = {
@@ -133,21 +134,87 @@ class Lists extends Component {
   
   listDeleteHandler = (id) => {
     const lists = [...this.state.lists];
-    const updatedLists = lists.filter(list => list.id != id);
-    this.setState({lists: updatedLists});
+    const updatedLists = lists.filter((list) => list.id != id);
+    this.setState({ lists: updatedLists });
     window.localStorage.setItem("lists", JSON.stringify(updatedLists));
   };
-
-  render() {
-    const lists = this.state.lists.map((list) => (
-      <List
-        key={list.id}
+  
+  dragStart = (e) => {
+    e.dataTransfer.setData("listItemText", e.target.children[0].innerText);
+    this.setState({ draggedList: e.target.children[0].innerText });
+  };
+  
+  dragOver = (e) => {
+    e.preventDefault();
+  };
+  
+  dragEnter = (id, e) => {
+    // const draggedObject = e.dataTransfer.getData("listItemText");
+    const droppedOnObject = e.target.innerText;
+    e.target.style = {color: "red"};
+    const lists = [...this.state.lists];
+    const targetedList = { ...lists.filter((list) => list.id === id) };
+    const draggedIndex = targetedList[0].items.findIndex(
+      (item) => item.text.trim() === this.state.draggedList.trim()
+      );
+      const droppedIndex = targetedList[0].items.findIndex(
+        (item) => item.text.trim() === droppedOnObject.trim()
+        );
+        
+        const items = [...targetedList[0].items];
+        const removedItem = items.splice(draggedIndex, 1);
+        items.splice(droppedIndex, 0, removedItem[0]);
+        
+        const updatedLists = lists.map((list) => {
+          if (list.id === targetedList[0].id) {
+            list.items = [...items];
+          }
+          return list;
+        });
+        this.setState({ lists: updatedLists });
+      };
+      
+      onDrop = (id, e) => {
+        e.preventDefault();
+        const draggedObject = e.dataTransfer.getData("listItemText");
+        const droppedOnObject = e.target.innerText;
+        const lists = [...this.state.lists];
+        const targetedList = { ...lists.filter((list) => list.id === id) };
+        const draggedIndex = targetedList[0].items.findIndex(
+          (item) => item.text.trim() === draggedObject.trim()
+          );
+          const droppedIndex = targetedList[0].items.findIndex(
+            (item) => item.text.trim() === droppedOnObject.trim()
+            );
+            
+            const items = [...targetedList[0].items];
+            const removedItem = items.splice(draggedIndex, 1);
+            items.splice(droppedIndex, 0, removedItem[0]);
+            
+            const updatedLists = lists.map((list) => {
+              if (list.id === targetedList[0].id) {
+                list.items = [...items];
+              }
+              return list;
+            });
+            this.setState({ lists: updatedLists });
+            window.localStorage.setItem("lists", JSON.stringify(updatedLists));
+          };
+          
+          render() {
+            const lists = this.state.lists.map((list) => (
+              <List
+              key={list.id}
         info={list}
         submit={this.itemAddHandler}
         changed={this.inputChangeHandler}
         listDelete={this.listDeleteHandler}
         itemDelete={this.itemDeleteHandler}
         itemDone={this.itemDoneHandler}
+        dragStart={this.dragStart}
+        dragOver={this.dragOver}
+        dragEnter={(e) => this.dragEnter(list.id, e)}
+        onDrop={(e) => this.onDrop(list.id, e)}
       />
     ));
 

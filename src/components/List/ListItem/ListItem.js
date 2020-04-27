@@ -42,7 +42,15 @@ const ListItem = styled.li`
 const listItem = (props) => {
   return (
     // <ListItem onClick={props.itemDelete} >
-    <ListItem onClick={props.itemDone} show={props.show} draggable={"true"} >
+    <ListItem
+      onClick={props.itemDone}
+      show={props.show}
+      draggable={"true"}
+      onDragStart={props.dragStart}
+      onDragEnter={props.dragEnter}
+      onDragOver={props.dragOver}
+      onDrop={props.onDrop}
+    >
       <label className={"text"}>{props.item.text}</label>
       <label className={"time"}>{props.item.time}</label>
     </ListItem>

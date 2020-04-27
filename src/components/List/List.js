@@ -62,6 +62,10 @@ const List = (props) => {
         itemDelete={() => props.itemDelete(item)}
         itemDone={() => props.itemDone(props.info.id, item)}
         show={!item.complete}
+        dragStart={props.dragStart}
+        dragOver={props.dragOver}
+        dragEnter={props.dragEnter}
+        onDrop={props.onDrop}
       />
     ));
   }
