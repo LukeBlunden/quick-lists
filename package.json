@@ -1,33 +1,35 @@
 {
-  "name": "quick-lists",
-  "version": "1.0.0",
-  "description": "Obligatory CRUD",
-  "main": "index.js",
-  "repository": "https://github.com/LukeBlunden/quick-lists.git",
-  "author": "<lucas.blunden@gmail.com>",
-  "license": "MIT",
-  "private": false,
-  "devDependencies": {
-    "@babel/cli": "7.1.0",
-    "@babel/core": "^7.1.0",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-env": "7.1.0",
-    "@babel/preset-react": "7.0.0",
-    "babel-loader": "8.0.2",
-    "css-loader": "1.0.0",
-    "style-loader": "0.23.0",
-    "webpack": "^4.43.0",
-    "webpack-cli": "3.1.1",
-    "webpack-dev-server": "3.1.8"
-  },
+  "name": "quick-lists-cra",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hot-loader": "^4.12.20",
+    "react-scripts": "3.4.1",
     "styled-components": "^5.1.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development",
-    "build": "webpack --mode development"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
