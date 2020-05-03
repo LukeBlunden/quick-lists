@@ -1,18 +1,18 @@
 // package imports
 import React, { Component } from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
 
 // Component imports
 import List from "../../components/List/List";
 import NewList from "../../components/NewList/NewList";
 import AddButton from "../../components/UI/AddButton/AddButton";
 
-const ListsContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
+// const ListsContainer = styled.div`
+//   width: 100vw;
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: center;
+// `;
 
 class Lists extends Component {
   state = {
@@ -232,11 +232,11 @@ class Lists extends Component {
     }
 
     return (
-      <ListsContainer>
+      <div>
         {lists}
         {newList}
         <AddButton clicked={this.newListHandler} />
-      </ListsContainer>
+      </div>
     );
   }
 }
