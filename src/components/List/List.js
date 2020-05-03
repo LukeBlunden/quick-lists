@@ -53,21 +53,33 @@ const NewItem = styled.form`
 `;
 
 const List = (props) => {
-  let listItems = "";
-  if (props.info.items != []) {
-    listItems = props.info.items.map((item) => (
-      <ListItem
-        item={item}
-        key={item.text}
-        itemDelete={() => props.itemDelete(item)}
-        itemDone={() => props.itemDone(props.info.id, item)}
-        show={!item.complete}
-        dragStart={props.dragStart}
-        dragOver={props.dragOver}
-        dragEnter={props.dragEnter}
-        onDrop={props.onDrop}
-      />
-    ));
+  let listItems = [];
+  // let listItems = [<ListItem item={props.info.items[0]} />];
+  // if (props.info.items !== []) {
+  // if (Array.isArray(props.info.items) && props.info.items.length) {
+  //   listItems = props.info.items.map((item) => {
+  //     console.log(item);
+  //     return <ListItem text={item.text} key={item.text}>{item.text}</ListItem>
+  //   }
+  //   // <ListItem
+  //   //   item={item}
+  //   //   key={item.text}
+  //   //   itemDelete={() => props.itemDelete(item)}
+  //   //   itemDone={() => props.itemDone(props.info.id, item)}
+  //   //   show={!item.complete}
+  //   //   dragStart={props.dragStart}
+  //   //   dragOver={props.dragOver}
+  //   //   dragEnter={props.dragEnter}
+  //   //   onDrop={props.onDrop}
+  //   // />
+  //   );
+  // }
+
+  if (props.info.items) {
+    listItems = props.info.items.map((item) => {
+      console.log(item);
+      return (<ListItem text={item.text} key={item.text}>{item.text}</ListItem>)
+    })
   }
 
   return (

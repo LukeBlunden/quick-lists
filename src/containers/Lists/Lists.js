@@ -22,7 +22,10 @@ class Lists extends Component {
       {
         id: 1,
         title: "The first list",
-        items: [],
+        items: [
+          // { text: "first Item", time: "9am", complete: false },
+          // { text: "2nd Item", time: "10am", complete: false },
+        ],
         newItem: { text: "", time: "", complete: false },
       },
     ],
