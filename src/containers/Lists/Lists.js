@@ -1,34 +1,24 @@
 // package imports
 import React, { Component } from "react";
-// import styled from "styled-components";
+import styled from "styled-components";
 
 // Component imports
 import List from "../../components/List/List";
 import NewList from "../../components/NewList/NewList";
 import AddButton from "../../components/UI/AddButton/AddButton";
 
-// const ListsContainer = styled.div`
-//   width: 100vw;
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: center;
-// `;
+const ListsContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
 
 class Lists extends Component {
   state = {
     listCounter: 1,
     newList: "",
-    lists: [
-      {
-        id: 1,
-        title: "The first list",
-        items: [
-          // { text: "first Item", time: "9am", complete: false },
-          // { text: "2nd Item", time: "10am", complete: false },
-        ],
-        newItem: { text: "", time: "", complete: false },
-      },
-    ],
+    lists: [],
     // Required for drag preview as we cannot access getData()
     draggedList: "",
   };
@@ -232,11 +222,11 @@ class Lists extends Component {
     }
 
     return (
-      <div>
+      <ListsContainer>
         {lists}
         {newList}
         <AddButton clicked={this.newListHandler} />
-      </div>
+      </ListsContainer>
     );
   }
 }
